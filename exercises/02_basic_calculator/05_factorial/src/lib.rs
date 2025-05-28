@@ -12,7 +12,14 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::factorial;
+
+    pub fn factorial(n: u32) -> u32 {
+        if n == 0 {
+            1
+        } else {
+            n * factorial(n - 1)
+        }
+    }
 
     #[test]
     fn first() {
