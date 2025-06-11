@@ -1,4 +1,7 @@
+// https://rust-exercises.com/100-exercises/03_ticket_v1/03_modules.html
+
 mod helpers {
+    use crate::Ticket; // Import the `Ticket` struct from the crate root
     // TODO: Make this code compile, either by adding a `use` statement or by using
     //  the appropriate path to refer to the `Ticket` struct.
 

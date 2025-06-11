@@ -1,3 +1,5 @@
+// https://rust-exercises.com/100-exercises/03_ticket_v1/06_ownership.html
+
 // TODO: based on what we just learned about ownership, it sounds like immutable references
 //   are a good fit for our accessor methods.
 //   Change the existing implementation of `Ticket`'s accessor methods to take a reference
@@ -8,6 +10,42 @@ pub struct Ticket {
     description: String,
     status: String,
 }
+
+/*
+// Example of a wrong implementation that takes ownership of `self`
+// as a result you can only call one of these methods at a time.
+// This code will not compile:
+    // if ticket.status() == "To-Do" {
+        // Due to status() method call ticket` move occurs because 
+        // type `Ticket` does not implement the `Copy` trait.
+        // `Ticket::status` takes ownership of the receiver `self`, 
+        // which moves `ticket`
+        // https://rust-exercises.com/100-exercises/03_ticket_v1/06_ownership.html
+
+    //    println!("Your next task is: {}", ticket.title());
+    // }
+
+    !!!These constraints are enforced by the borrow checker, a subsystem of the Rust compiler!!!
+    !!!To build useful accessor methods we need to start working with REFERENCES.!!!
+        
+    - Immutable references (&) allow you to read the value, but not to mutate it
+    - Mutable references (&mut) allow you to read and mutate the value
+
+
+impl Ticket {
+    pub fn title(self) -> String {
+        self.title
+    }
+
+    pub fn description(self) -> String {
+        self.description
+    }
+
+    pub fn status(self) -> String {
+        self.status
+    }
+}
+*/
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
@@ -34,16 +72,16 @@ impl Ticket {
         }
     }
 
-    pub fn title(self) -> String {
-        self.title
+    pub fn title(&self) -> &str {
+        &self.title
     }
 
-    pub fn description(self) -> String {
-        self.description
+    pub fn description(&self) -> &str  {
+        &self.description
     }
 
-    pub fn status(self) -> String {
-        self.status
+    pub fn status(&self) -> &str  {
+         &self.status
     }
 }
 

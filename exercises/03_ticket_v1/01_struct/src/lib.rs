@@ -1,3 +1,5 @@
+// https://rust-exercises.com/100-exercises/03_ticket_v1/01_struct.html
+
 // Define a struct named `Order` with the following fields:
 // - `price`, an unsigned integer
 // - `quantity`, an unsigned integer

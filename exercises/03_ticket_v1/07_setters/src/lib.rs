@@ -1,8 +1,9 @@
+// https://rust-exercises.com/100-exercises/03_ticket_v1/07_setters.html
+
 // TODO: Add &mut-setters to the `Ticket` struct for each of its fields.
 //   Make sure to enforce the same validation rules you have in `Ticket::new`!
 //   Even better, extract that logic and reuse it in both places. You can use
 //   private functions or private static methods for that.
-
 pub struct Ticket {
     title: String,
     description: String,
@@ -11,21 +12,10 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
-        if title.is_empty() {
-            panic!("Title cannot be empty");
-        }
-        if title.len() > 50 {
-            panic!("Title cannot be longer than 50 bytes");
-        }
-        if description.is_empty() {
-            panic!("Description cannot be empty");
-        }
-        if description.len() > 500 {
-            panic!("Description cannot be longer than 500 bytes");
-        }
-        if status != "To-Do" && status != "In Progress" && status != "Done" {
-            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
-        }
+
+        Self::panic_if_title_not_valid(&title);
+        Self::panic_if_description_not_valid(&description);
+        Self::panic_if_status_not_valid(&status);
 
         Ticket {
             title,
@@ -38,12 +28,51 @@ impl Ticket {
         &self.title
     }
 
+    pub fn set_title(&mut self, value: String) {
+        Self::panic_if_title_not_valid(&value);
+        self.title = value;
+    }
+
     pub fn description(&self) -> &String {
         &self.description
     }
 
+    pub fn set_description(&mut self, value: String) {
+        Self::panic_if_description_not_valid(&value);
+        self.description = value;
+    }
+
     pub fn status(&self) -> &String {
         &self.status
+    }
+
+    pub fn set_status(&mut self, value: String) {
+        Self::panic_if_status_not_valid(&value);
+        self.status = value;
+    }
+
+    fn panic_if_title_not_valid(title: &str) {
+        if title.is_empty() {
+            panic!("Title cannot be empty");
+        }
+        if title.len() > 50 {
+            panic!("Title cannot be longer than 50 bytes");
+        }
+    }
+
+    fn panic_if_description_not_valid(description: &str) {
+        if description.is_empty() {
+            panic!("Description cannot be empty");
+        }
+        if description.len() > 500 {
+            panic!("Description cannot be longer than 500 bytes");
+        }
+    }
+
+    fn panic_if_status_not_valid(status: &str) {
+        if status != "To-Do" && status != "In Progress" && status != "Done" {
+            panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
+        }
     }
 }
 
