@@ -12,11 +12,13 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn title(&self) -> &str {
-        todo!()
+        // Normalize the title by trimming whitespace
+        self.title.trim()
     }
 
     pub fn description(&self) -> &str {
-        todo!()
+        // Normalize the description by trimming whitespace
+        self.description.trim()
     }
 }
 

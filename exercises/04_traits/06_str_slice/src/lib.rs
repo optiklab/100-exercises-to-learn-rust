@@ -31,16 +31,26 @@ impl Ticket {
         }
     }
 
-    pub fn title(&self) -> &String {
-        &self.title
+    /*
+
+    self.title is a String
+    &self.title is, therefore, a &String
+    The output of the (modified) title method is &str... Why no compile error?
+    Answer:
+    The Deref trait is the mechanism behind the language feature known as deref coercion.
+    String implements the Deref trait, which allows it to be automatically converted to a &str when needed.
+    https://rust-exercises.com/100-exercises/04_traits/07_deref
+    */
+    pub fn title(&self) -> &str {
+        &self.title //self.title.as_str()
     }
 
-    pub fn description(&self) -> &String {
-        &self.description
+    pub fn description(&self) -> &str {
+        &self.description //self.description.as_str()
     }
 
-    pub fn status(&self) -> &String {
-        &self.status
+    pub fn status(&self) -> &str {
+        &self.status //self.status.as_str()
     }
 }
 
