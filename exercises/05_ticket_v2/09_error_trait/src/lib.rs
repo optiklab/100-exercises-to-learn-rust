@@ -2,10 +2,64 @@
 //  When implementing `Display`, you may want to use the `write!` macro from Rust's standard library.
 //  The docs for the `std::fmt` module are a good place to start and look for examples:
 //  https://doc.rust-lang.org/std/fmt/index.html#write
+use std::fmt;
+use std::error::Error;
 
+#[derive(Debug)]
 enum TicketNewError {
     TitleError(String),
     DescriptionError(String),
+}
+
+// impl fmt::Debug for TicketNewError {
+    //fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), Error>;
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         match self {
+//             TicketNewError::TitleError(description) => write!(f, "({})", description),
+//             TicketNewError::DescriptionError(description) => write!(f, "({})", description)
+//         }
+//     }
+// }
+
+impl fmt::Display for TicketNewError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+
+/// THIS IS SYNTAX OF 2021. In 2024 it is different.
+            TicketNewError::TitleError(description) => write!(f, "{}", description),
+            TicketNewError::DescriptionError(description) => write!(f, "{}", description)
+        }
+    }
+}
+
+impl Error for TicketNewError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match &self {
+
+/// THIS IS SYNTAX OF 2021. In 2024 it is different.
+            TicketNewError::TitleError(description) => Some(self),
+            TicketNewError::DescriptionError(description) => Some(self)
+        }
+    }
+}
+
+*/
+impl fmt::Display for TicketNewError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            TicketNewError::TitleError { description } => write!(f, "{}", description),
+            TicketNewError::DescriptionError { description } => write!(f, "{}", description)
+        }
+    }
+}
+
+impl Error for TicketNewError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match &self {
+            TicketNewError::TitleError { description: _ } => Some(self),
+            TicketNewError::DescriptionError { description: _ } => Some(self)
+        }
+    }
 }
 
 // TODO: `easy_ticket` should panic when the title is invalid, using the error message
@@ -13,8 +67,25 @@ enum TicketNewError {
 //   When the description is invalid, instead, it should use a default description:
 //   "Description not provided".
 fn easy_ticket(title: String, description: String, status: Status) -> Ticket {
-    todo!()
+    if title.is_empty() {
+        panic!("Title cannot be empty");
+    }
+    if title.len() > 50 {
+        panic!("Title cannot be longer than 50 bytes");
+    }
+
+    let mut desc = description;
+    if desc.is_empty() || desc.len() > 500 {
+        desc = String::from("Description not provided");
+    }
+
+    Ticket {
+        title,
+        description: desc,
+        status,
+    }
 }
+
 
 #[derive(Debug, PartialEq, Clone)]
 struct Ticket {
