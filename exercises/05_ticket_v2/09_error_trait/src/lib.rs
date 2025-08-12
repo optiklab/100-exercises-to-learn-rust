@@ -43,25 +43,6 @@ impl Error for TicketNewError {
     }
 }
 
-*/
-impl fmt::Display for TicketNewError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            TicketNewError::TitleError { description } => write!(f, "{}", description),
-            TicketNewError::DescriptionError { description } => write!(f, "{}", description)
-        }
-    }
-}
-
-impl Error for TicketNewError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        match &self {
-            TicketNewError::TitleError { description: _ } => Some(self),
-            TicketNewError::DescriptionError { description: _ } => Some(self)
-        }
-    }
-}
-
 // TODO: `easy_ticket` should panic when the title is invalid, using the error message
 //   stored inside the relevant variant of the `TicketNewError` enum.
 //   When the description is invalid, instead, it should use a default description:
